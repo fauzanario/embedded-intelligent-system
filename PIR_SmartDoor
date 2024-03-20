@@ -1,0 +1,33 @@
+#include <Servo.h>
+int Pir = 8;
+int statusPir = 0;
+Servo myservo;
+
+void setup() {
+  // put your setup code here, to run once:
+  Serial.begin(9600);
+  Serial.println("Smart Door");
+  myservo.attach(6);
+  pinMode(Pir, INPUT);
+}
+
+void loop() {
+  // put your main code here, to run repeatedly:
+  statusPir = digitalRead(Pir);
+  if(statusPir == HIGH){
+    myservo.write(45);  // Memutar Servo ke kiri 45 derajat
+    delay(250);          
+    myservo.write(0);   // Memutar Servo ke kiri to 0 derajat
+    delay(1000);
+    myservo.write(45);  // Memutar Servo ke kiri 45 derajat
+    delay(250);          
+    myservo.write(90);  // Memutar Servo ke posisi center position (90 derajat)
+    delay(1000); 
+    Serial.println("Pintu Terbuka");
+  }else {         
+    myservo.write(90);  // Memutar Servo ke posisi center position (90 derajat)
+    delay(3000);
+    Serial.println("Pintu Tertutup");
+  }
+  delay(1000);
+}
