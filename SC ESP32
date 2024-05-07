@@ -1,0 +1,61 @@
+#define PIN_TRIG 26
+#define PIN_ECHO 25
+#define LOWLED   18
+#define MIDLED   19
+#define HIGHLED  21
+#define MOTOR    27
+
+ unsigned int ketinggian = 0;
+ 
+ void setup(){ 
+
+  pinMode(LOWLED,OUTPUT);
+  pinMode(MIDLED,OUTPUT);
+  pinMode(HIGHLED,OUTPUT);
+  pinMode(MOTOR,OUTPUT);
+  digitalWrite(LOWLED, HIGH);
+  digitalWrite(MIDLED, HIGH);
+  digitalWrite(HIGHLED, HIGH);
+  digitalWrite(MOTOR, HIGH);
+
+  Serial.begin(115200);
+  pinMode(PIN_TRIG, OUTPUT);
+  pinMode(PIN_ECHO, INPUT);
+ }
+
+void loop(){
+//memulai pengukuran:
+digitalWrite(PIN_TRIG, HIGH);
+delayMicroseconds(10);
+digitalWrite(PIN_TRIG, LOW);
+
+//membaca hasil pengukuran:
+int durasi = pulseIn(PIN_ECHO,HIGH);
+Serial.print("Jarak permukaan air (cm): ");
+Serial.println(durasi / 58);
+
+ketinggian = durasi / 58;
+
+if (ketinggian <= 100)
+{
+
+       digitalWrite(LOWLED,HIGH);
+       digitalWrite(MIDLED,HIGH);
+       digitalWrite(HIGHLED, LOW);
+
+}
+else if ((ketinggian > 100) && (ketinggian <= 300))
+{
+       digitalWrite(LOWLED,HIGH);
+       digitalWrite(MIDLED, LOW);
+       digitalWrite(HIGHLED, HIGH);
+
+}
+else if (ketinggian > 300 )
+{
+      digitalWrite(LOWLED,LOW);
+      digitalWrite(MIDLED,HIGH);
+      digitalWrite(HIGHLED, HIGH);
+}
+delay(1000);
+}
